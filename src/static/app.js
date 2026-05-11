@@ -19,21 +19,34 @@ document.addEventListener("DOMContentLoaded", () => {
         activityCard.className = "activity-card";
 
         const spotsLeft = details.max_participants - details.participants.length;
+        const participantsHTML = details.participants.length
+          ? `
+              <div class="participants-section">
+                <p class="participants-label"><strong>Participants:</strong></p>
+                <ul class="participants-list">
+                  ${details.participants.map((participant) => `<li>${participant}</li>`).join("")}
+                </ul>
+              </div>
+            `
+          : `
+              <p class="no-participants"><strong>Participants:</strong> None yet</p>
+            `;
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          ${participantsHTML}
         `;
-
-        activitiesList.appendChild(activityCard);
-
+        
         // Add option to select dropdown
         const option = document.createElement("option");
         option.value = name;
         option.textContent = name;
         activitySelect.appendChild(option);
+
+        activitiesList.appendChild(activityCard);
       });
     } catch (error) {
       activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
